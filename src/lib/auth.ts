@@ -1,28 +1,28 @@
- import { PrismaAdapter } from '@auth/prisma-adapter'
-import GoogleProvider from 'next-auth/providers/google'
-import { AuthOptions } from 'next-auth'
-import prismaClient from './prisma'
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import GoogleProvider from 'next-auth/providers/google';
+import { AuthOptions } from 'next-auth';
+import type { Adapter } from 'next-auth/adapters';
+import prisma from './prisma';
 
 export const authOptions: AuthOptions = {
-  adapter:PrismaAdapter(prismaClient),
+  adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
-    })
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
   ],
   callbacks: {
-    async session({ session, token, user, }){
+    async session({ session, token, user }) {
       session.user = { ...session.user, id: user.id } as {
-        id: string,
+        id: string;
         name: string;
         email: string;
-      }
-
+      };
       return session;
+    },
+  },
+};
 
-    }
-  }
-} 
 
 //erro de building 6
