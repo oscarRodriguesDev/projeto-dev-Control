@@ -24,3 +24,5 @@ export const authOptions: AuthOptions = {
     }
   }
 }
+
+//tentando resolver erro de building 3
